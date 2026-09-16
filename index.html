@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Управление капиталом профессионального хоккеиста | Альфа-Капитал</title>
+  <style>
+    :root {
+      --alfa-red: #EF3124;
+      --alfa-red-hover: #D82418;
+      --alfa-red-light: #FFF2F1;
+      --alfa-red-border: #FCA5A5;
+      --bg-light: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #475569;
+      --border-color: #E2E8F0;
+    }
+ 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+ 
+    html {
+      scroll-behavior: smooth;
+    }
+ 
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      padding-bottom: 40px;
+      -webkit-font-smoothing: antialiased;
+    }
+ 
+    /* Мобильный верхний колонтитул */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+ 
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+ 
+    .brand-badge {
+      background: var(--alfa-red);
+      color: #FFFFFF;
+      font-weight: 900;
+      font-size: 11px;
+      padding: 5px 9px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+ 
+    .brand-subtitle {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--text-muted);
+    }
+ 
+    /* Навигационные кнопки быстрого перехода */
+    .quick-nav {
+      position: sticky;
+      top: 49px;
+      z-index: 90;
+      background: #FFFFFF;
+      display: flex;
+      overflow-x: auto;
+      gap: 8px;
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+      scrollbar-width: none;
+    }
+ 
+    .quick-nav::-webkit-scrollbar {
+      display: none;
+    }
+ 
+    .nav-pill {
+      background: #F1F5F9;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      transition: all 0.2s;
+    }
+ 
+    .nav-pill:active {
+      background: var(--alfa-red);
+      color: #FFFFFF;
+      border-color: var(--alfa-red);
+    }
+ 
+    /* Основной контейнер ленты */
+    main {
+      padding: 16px;
+      max-width: 580px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+ 
+    .section-block {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px 16px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+      scroll-margin-top: 100px;
+   }
+ 
+    .slide-tag {
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--alfa-red);
+      margin-bottom: 4px;
+      display: block;
+    }
+ 
+    .slide-title {
+      font-size: 21px;
+      font-weight: 900;
+      line-height: 1.25;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+ 
+    .slide-desc {
+      font-size: 13.5px;
+      font-weight: 550;
+      line-height: 1.45;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+ 
+    /* Метрики 2x2 */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+ 
+    .stat-box {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-top: 3.5px solid var(--alfa-red);
+      border-radius: 10px;
+      padding: 12px 10px;
+      text-align: center;
+    }
+ 
+    .stat-box .num {
+      font-size: 21px;
+      font-weight: 900;
+      color: var(--text-main);
+      line-height: 1.1;
+      margin-bottom: 2px;
+    }
+ 
+    .stat-box .lbl {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+ 
+    /* Карточки */
+    .cards-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+ 
+    .mobile-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+ 
+    .card-top-red { border-top: 4px solid var(--alfa-red); }
+    .card-top-navy { border-top: 4px solid #0F172A; }
+    .card-top-blue { border-top: 4px solid #2563EB; }
+ 
+    .card-tag {
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: #F1F5F9;
+      color: var(--text-main);
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+ 
+    .card-header-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+ 
+    .card-text-main {
+      font-size: 13px;
+      font-weight: 550;
+      line-height: 1.45;
+      color: var(--text-muted);
+    }
+ 
+    ul.mobile-list {
+      list-style: none;
+      margin-top: 6px;
+    }
+ 
+    ul.mobile-list li {
+      font-size: 13px;
+      font-weight: 550;
+      line-height: 1.4;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      position: relative;
+      padding-left: 16px;
+    }
+ 
+    ul.mobile-list li::before {
+      content: "•";
+      color: var(--alfa-red);
+      font-weight: 900;
+      font-size: 16px;
+      position: absolute;
+      left: 0;
+      top: -2px;
+    }
+ 
+    /* Светло-красный акцентный блок */
+    .card-accent-red {
+      background-color: var(--alfa-red-light);
+      border: 1.5px solid var(--alfa-red-border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+ 
+    .card-accent-red .card-header-title {
+      color: #991B1B;
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+ 
+    .card-accent-red p {
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: #450A0A;
+      font-weight: 600;
+    }
+ 
+    .card-accent-red b {
+      color: #0F172A;
+      font-weight: 800;
+    }
+ 
+    /* Цитаты */
+    .quote-card {
+      margin-top: 14px;
+      background: var(--alfa-red-light);
+      border-left: 4px solid var(--alfa-red);
+      padding: 12px 14px;
+      border-radius: 0 10px 10px 0;
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: #7F1D1D;
+      font-weight: 700;
+    }
+ 
+    .footer-note {
+      text-align: center;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+ 
+  <!-- Хедер -->
+  <header>
+    <div class="brand-wrap">
+      <div class="brand-badge">Альфа</div>
+      <div class="brand-subtitle">Капитал Спортсмена</div>
+    </div>
+  </header>
+ 
+  <!-- Быстрая навигация по разделам ленты -->
+  <div class="quick-nav">
+    <a href="#section-1" class="nav-pill">1. О компании</a>
+    <a href="#section-2" class="nav-pill">2. Карьера</a>
+    <a href="#section-3" class="nav-pill">3. Звенья и Защита</a>
+    <a href="#section-4" class="nav-pill">4. Тест-драйв</a>
+  </div>
+ 
+  <main>
+ 
+    <!-- РАЗДЕЛ 1: О КОМПАНИИ, СТАТУС И НАДЕЖНОСТЬ -->
+    <section class="section-block" id="section-1">
+      <span class="slide-tag">Статус и Надежность</span>
+      <h1 class="slide-title">Инфраструктура Top-League для вашего капитала</h1>
+      <p class="slide-desc">
+        Вы выступаете в профессиональном спорте высших достижений — капитал должен обслуживаться институтом аналогичного уровня надежности и масштаба.
+      </p>
+ 
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="num">33 года</div>
+          <div class="lbl">На рынке РФ</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">> 1 трлн ₽</div>
+          <div class="lbl">Под управлением</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">3,1 млн</div>
+          <div class="lbl">Клиентов</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">А++</div>
+          <div class="lbl">Высший рейтинг</div>
+        </div>
+      </div>
+ 
+      <div class="cards-stack">
+        <div class="mobile-card card-top-navy">
+          <span class="card-tag">Экспертиза</span>
+          <h2 class="card-header-title">Управляющие с опытом 10–20+ лет</h2>
+          <ul class="mobile-list">
+            <li><b>Облигации:</b> крупнейшие фонды в РФ (более 350 млрд руб. под управлением).</li>
+            <li><b>Акции и альтернативы:</b> стратегии с активами свыше 200 млрд и 140 млрд руб.</li>
+            <li>Лидирующие позиции фондов по доходности на инвестиционном рынке России.</li>
+          </ul>
+        </div>
+ 
+        <div class="mobile-card card-top-red">
+          <span class="card-tag">Сервис Top-League</span>
+          <h2 class="card-header-title">Комплексное ведение под ключ</h2>
+         <ul class="mobile-list">
+            <li>Индивидуальный портфель под график контрактов и этапы карьеры.</li>
+            <li>Налоговое и юридическое сопровождение, аудит сторонних предложений.</li>
+            <li>Связь 24/7 без звонков и отчетов в дни матчей.</li>
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="quote-card">
+        «Главное правило профессионального спортсмена — контроль над капиталом. Мы объединяем экспертизу лучших управляющих страны, чтобы превратить ваши контракты в надежное семейное достояние».
+      </div>
+    </section>
+ 
+    <!-- РАЗДЕЛ 2: СПЕЦИФИКА КАРЬЕРЫ -->
+    <section class="section-block" id="section-2">
+      <span class="slide-tag">Специфика карьеры</span>
+      <h1 class="slide-title">10–15 лет на льду должны обеспечить 50 лет жизни</h1>
+      <p class="slide-desc">
+        90% капитала профессионального хоккеиста формируется в узкий период контрактов. Задача — растянуть этот доход на всю жизнь.
+      </p>
+ 
+      <div class="cards-stack">
+        <div class="mobile-card card-top-red">
+          <span class="card-tag">Особенность</span>
+          <h2 class="card-header-title">Спрессованный цикл дохода</h2>
+          <ul class="mobile-list">
+            <li>Пик контрактов длится 8–15 лет.</li>
+            <li>После спорта вы должны выбирать свой путь (бизнес, медиа, тренерство) исключительно из интереса, а не из финансовой нужды.</li>
+          </ul>
+        </div>
+ 
+        <div class="mobile-card card-top-navy">
+          <span class="card-tag">Ловушки</span>
+          <h2 class="card-header-title">Где чаще всего теряют деньги</h2>
+          <ul class="mobile-list">
+            <li><b>Бизнес «с друзьями»:</b> вход на доверии без аудита экономики, контроля и отчетности.</li>
+            <li><b>Бытовые стартапы:</b> автомойки, рестораны, барбершопы часто создают кассовые разрывы и ведут к потере вложений.</li>
+            <li><b>Концентрация:</b> крупные суммы в одном проекте без диверсификации.</li>
+          </ul>
+        </div>
+ 
+        <div class="mobile-card card-top-red">
+          <span class="card-tag">Партнерство</span>
+          <h2 class="card-header-title">Финансовый партнер на 10–20 лет</h2>
+          <ul class="mobile-list">
+            <li>Не предлагаем разовые продукты ради сиюминутной комиссии.</li>
+            <li>Задача — пройти карьеру без критических финансовых ошибок.</li>
+            <li>Вы держите фокус только на хоккее, а мы берем на себя управление сбережениями.</li>
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="quote-card">
+        «Когда заключается контракт, кажется, что денег хватит навсегда. Но если разделить эту сумму на годы жизни семьи с учетом инфляции — необходима строгая система управления активами».
+      </div>
+    </section>
+ 
+    <!-- РАЗДЕЛ 3: АРХИТЕКТУРА И ЗАЩИТА -->
+    <section class="section-block" id="section-3">
+      <span class="slide-tag">Архитектура и Защита</span>
+      <h1 class="slide-title">Тактика звеньев: трехуровневая система и прямое владение</h1>
+      <p class="slide-desc">
+        Выстраиваем капитал как сильную команду: распределяем задачи по звеньям и полностью исключаем инфраструктурные риски.
+      </p>
+ 
+      <div class="cards-stack">
+        <div class="mobile-card card-top-blue">
+          <span class="card-tag">Звено 1 • Всегда под рукой</span>
+          <h2 class="card-header-title">Оперативный резерв</h2>
+          <ul class="mobile-list">
+            <li>Фонды денежного рынка (доходность по ключевой ставке ЦБ).</li>
+            <li>Ежедневная капитализация дохода.</li>
+            <li><b>Полная ликвидность:</b> вывод любой суммы в любой день без потери процентов.</li>
+            <li>Надежная база под текущие расходы, поездки и здоровье.</li>
+          </ul>
+        </div>
+ 
+        <div class="mobile-card card-top-navy">
+          <span class="card-tag">Звено 2 • Оборона (1–5 лет)</span>
+          <h2 class="card-header-title">Тактический резерв</h2>
+          <ul class="mobile-list">
+            <li>Облигационные фонды и коммерческая недвижимость.</li>
+            <li>Предсказуемый доход выше инфляции в рублях и валюте.</li>
+            <li>Формирование базы под крупные цели (покупка недвижимости, семейные планы).</li>
+          </ul>
+        </div>
+ 
+        <div class="mobile-card card-top-red">
+          <span class="card-tag">Звено 3 • Нападающие (3–7+ лет)</span>
+          <h2 class="card-header-title">Стратегический рост</h2>
+          <ul class="mobile-list">
+            <li>Фонды акций, ЗПИФ коммерческой недвижимости.</li>
+            <li>Инструменты, которые умножают капитал на длинной дистанции за счет сложного процента.</li>
+          </ul>
+        </div>
+ 
+        <div class="card-accent-red">
+          <h2 class="card-header-title">🔒 Прямое владение (не банковский вклад)</h2>
+          <p>
+            На обычном вкладе вы даете банку в долг. В Альфа-Капитале ценные бумаги оформляются в <b>вашу личную собственность</b>. Учет ведет независимый государственный орган — <b>Национальный Расчетный Депозитарий (НРД)</b>. Даже при закрытии УК активы по одному заявлению переводятся в Сбер, ВТБ или любой другой банк.
+          </p>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- РАЗДЕЛ 4: ПЛАН ДЕЙСТВИЙ И ТЕСТ-ДРАЙВ -->
+    <section class="section-block" id="section-4">
+      <span class="slide-tag">План действий</span>
+      <h1 class="slide-title">Финансовая независимость после карьеры и тест-драйв</h1>
+      <p class="slide-desc">
+        Наша задача — сформировать систему, которая начнет обеспечивать привычный высокий уровень жизни сразу после завершения спортивной карьеры.
+      </p>
+ 
+      <div class="cards-stack">
+        <div class="mobile-card card-top-red">
+          <span class="card-tag">Шаг 1 • Без обязательств</span>
+          <h2 class="card-header-title">Бесплатный аудит</h2>
+          <p class="card-text-main">
+            Вам не нужно ничего переводить на первой встрече. Разбираем текущую структуру (вклады, валюты) и через 2–3 дня даем заключение: где деньги теряют на инфляции и как их оптимизировать.
+          </p>
+        </div>
+ 
+        <div class="mobile-card card-top-navy">
+          <span class="card-tag">Шаг 2 • Проверка сервиса</span>
+          <h2 class="card-header-title">Тест-драйв на комфортную сумму</h2>
+          <p class="card-text-main">
+            Формируем стартовый защитный портфель на любую удобную сумму. Вы оцениваете приложение, скорость ответов и прозрачность учета в НРД. <b>Полная свобода:</b> деньги можно забрать за 1 день без штрафов.
+          </p>
+        </div>
+ 
+        <div class="mobile-card card-top-blue">
+          <span class="card-tag">Шаг 3 • Большая игра</span>
+          <h2 class="card-header-title">Стратегия на 10–20 лет</h2>
+          <p class="card-text-main">
+            Расчет целевого капитала для ежемесячной ренты (1–3+ млн рублей) после завершения карьеры и формирование защищенных портфелей (например, фонд «Образование детям»).
+          </p>
+        </div>
+      </div>
+ 
+      <div class="quote-card">
+        «Тестовый портфель — это разминка перед матчем. Основная игра — это ваша финансовая независимость на всю жизнь. Давайте сначала сделаем комфортный шаг и убедимся, что нам удобно играть в одной команде».
+      </div>
+ 
+      <div class="footer-note">
+        «Альфа-Капитал» • Специализированный сервис для спортсменов
+      </div>
+    </section>
+ 
+  </main>
+ 
+</body>
+</html>
